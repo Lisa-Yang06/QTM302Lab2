@@ -1,0 +1,68 @@
+---
+title: "Exploring and Visualizing Data"
+author: "Lisa Yang"
+format: html
+editor: visual
+---
+
+## Loading Packages and Data
+
+First, we need to load relevant packages and data for analysis.
+
+```{r}
+install.packages("dslabs")
+library(tidyverse)
+library(dslabs)
+head(heights)
+```
+
+## Counting Measurements for Male and Female
+
+```{r}
+male <- heights$height[heights$sex == "Male"]
+female <- heights$height[heights$sex == "Female"]
+length(male)
+length(female)
+```
+
+As shown above, there are 812 measurements for male and 238 measurements for female.
+
+## Comparing Distributions Using Percentiles
+
+Suppose we can’t make a plot and want to compare the distributions side by side. Therefore, we want to compare `female_percentiles` and `male_percentiles` with the 10th, 30th, 50th, 70th, & 90th percentiles for each sex.
+
+```{r}
+male_percentiles <- quantile(male, probs = c(0.10, 0.30, 0.50, 0.70, 0.90))
+female_percentiles <- quantile(female, probs = c(0.10, 0.30, 0.50, 0.70, 0.90))
+
+print(male_percentiles)
+print(female_percentiles)
+
+df <- data.frame(
+  Percentile = names(female_percentiles),
+  Female = as.numeric(female_percentiles),
+  Male = as.numeric(male_percentiles)
+)
+print(df)
+```
+
+## Exploring Population Sizes
+
+Based on the given boxplots, we can see that **Asia** is the continent that has the country with the biggest population size.
+
+Additionally, **Africa** has the largest median population size, which is approximately **10** millions.
+
+Also, we can see that the 75th percentile for Europe is approximately at 14 million, and thus for question 6, **b** is the right answer.
+
+After log transformation, **Americas** will still have the largest IQR.
+
+## Calculating Proportions 
+
+Now we are interested in what proportion of the data is between 69 and 72 inches (taller than 69, but shorter or equal to 72). We are only looking at male heights.
+
+```{r}
+proportion <- mean(male > 69 & male <= 72)
+print(proportion)
+```
+
+As shown above, there is about **33.3%** males having heights between 69 and 72 inches.
